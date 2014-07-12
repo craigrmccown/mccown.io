@@ -30,7 +30,7 @@ module.exports = function(grunt) {
     'clean:stage',
     'copy:toStage',
     'compass',
-    'clean:scss'
+    'clean:scss',
     'useminPrepare',
     'cssmin',
     'usemin',
