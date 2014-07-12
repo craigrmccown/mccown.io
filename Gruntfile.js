@@ -9,27 +9,52 @@ module.exports = function(grunt) {
     },
     copy: {
       toStage: {
-        src: 'src',
-        dest: '.tmp'
+        files: [
+          {
+            expand: true,
+            cwd: 'src',
+            src: [
+              'styles/**/*',
+              '*.html'
+            ],
+            dest: '.tmp/'
+          }
+        ]
       },
       toDist: {
-        src: '.tmp',
-        dest: 'build'
+        files: [
+          {
+            expand: true,
+            cwd: '.tmp',
+            src: [
+              'styles/**/*',
+              '*.html'
+            ],
+            dest: 'build/'
+          }
+        ]
       }
     },
     compass: {
-      sassDir: '.tmp/styles',
-      cssDir: '.tmp/styles'
+      main: {
+        options: {
+          sassDir: '.tmp/styles',
+          cssDir: '.tmp/styles'
+        }
+      }
     },
     useminPrepare: {
       html: 'src/index.html'
+    },
+    usemin: {
+      html: '.tmp/index.html'
     }
   });
 
   grunt.registerTask('build', [
     'clean:stage',
     'copy:toStage',
-    'compass',
+    'compass:main',
     'clean:scss',
     'useminPrepare',
     'cssmin',
