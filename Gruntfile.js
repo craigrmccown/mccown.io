@@ -5,7 +5,7 @@ module.exports = function(grunt) {
     clean: {
       stage: ['.tmp'],
       dist: ['build'],
-      scss: ['.tmp/*.scss']
+      scss: ['.tmp/**/*.scss']
     },
     copy: {
       toStage: {
