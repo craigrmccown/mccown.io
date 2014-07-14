@@ -2,22 +2,27 @@ module.exports = function(grunt) {
   require('load-grunt-tasks')(grunt);
 
   grunt.initConfig({
+    config: {
+      src: 'src',
+      stage: '.tmp',
+      dist: 'build'
+    },
     clean: {
-      stage: ['.tmp'],
-      dist: ['build'],
-      scss: ['.tmp/**/*.scss']
+      stage: ['<%= config.stage %>'],
+      dist: ['<%= config.dist %>'],
+      scss: ['<%= config.stage %>/**/*.scss']
     },
     copy: {
       toStage: {
         files: [
           {
             expand: true,
-            cwd: 'src',
+            cwd: '<%= config.src %>',
             src: [
               'styles/**/*',
               '*.html'
             ],
-            dest: '.tmp/'
+            dest: '<%= config.stage %>'
           }
         ]
       },
@@ -25,12 +30,12 @@ module.exports = function(grunt) {
         files: [
           {
             expand: true,
-            cwd: '.tmp',
+            cwd: '<%= config.stage %>',
             src: [
               'styles/**/*',
               '*.html'
             ],
-            dest: 'build/'
+            dest: '<%= config.dist %>'
           }
         ]
       }
@@ -38,16 +43,20 @@ module.exports = function(grunt) {
     compass: {
       main: {
         options: {
-          sassDir: '.tmp/styles',
-          cssDir: '.tmp/styles'
+          sassDir: '<%= config.stage %>/styles',
+          cssDir: '<%= config.stage %>/styles'
         }
       }
     },
     useminPrepare: {
-      html: 'src/index.html'
+      html: '<%= config.stage %>/index.html',
+      options: {
+        root: '<%= config.stage %>',
+        dest: '<%= config.stage %>'
+      }
     },
     usemin: {
-      html: '.tmp/index.html'
+      html: '<%= config.stage %>/index.html'
     }
   });
 
@@ -57,6 +66,7 @@ module.exports = function(grunt) {
     'compass:main',
     'clean:scss',
     'useminPrepare',
+    'concat',
     'cssmin',
     'usemin',
     'clean:dist',
