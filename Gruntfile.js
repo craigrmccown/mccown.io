@@ -101,8 +101,7 @@ module.exports = function(grunt) {
           'compass:stage',
           'clean:scssFromStage',
           'clean:stylesFromDist',
-          'copy:stylesToDist',
-          'clean:stage'
+          'copy:stylesToDist'
         ],
         options: {
           interrupt: true,
