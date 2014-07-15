@@ -57,6 +57,15 @@ module.exports = function(grunt) {
     },
     usemin: {
       html: '<%= config.stage %>/index.html'
+    },
+    connect: {
+      server: {
+        options: {
+          port: 8000,
+          base: '<%= config.dist %>',
+          keepalive: true
+        }
+      }
     }
   });
 
@@ -72,5 +81,9 @@ module.exports = function(grunt) {
     'clean:dist',
     'copy:toDist',
     'clean:stage'
+  ]);
+
+  grunt.registerTask('server', [
+    'connect:server'
   ]);
 }
