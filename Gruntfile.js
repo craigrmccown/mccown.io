@@ -88,7 +88,8 @@ module.exports = function(grunt) {
         options: {
           port: 8000,
           base: '<%= config.dist %>',
-          keepalive: true
+          keepalive: true,
+          debug: true
         }
       }
     },
@@ -109,10 +110,15 @@ module.exports = function(grunt) {
       }
     },
     concurrent: {
-      devServer: [
-        'watch:styles',
-        'connect:server'
-      ]
+      dev: {
+        tasks: [
+          'watch:styles',
+          'connect:server'
+        ],
+        options: {
+          logConcurrentOutput: true
+        }
+      }
     }
   });
 
@@ -130,7 +136,7 @@ module.exports = function(grunt) {
     'clean:stage'
   ]);
 
-  grunt.registerTask('server', [
-    'concurrent:devServer',
+  grunt.registerTask('dev', [
+    'concurrent:dev',
   ]);
 }

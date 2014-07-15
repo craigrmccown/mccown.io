@@ -7,5 +7,5 @@ Really simple static page site.
 ```
 npm install
 grunt build
-grunt server
+grunt dev
 ```
