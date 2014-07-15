@@ -10,7 +10,8 @@ module.exports = function(grunt) {
     clean: {
       stage: ['<%= config.stage %>'],
       dist: ['<%= config.dist %>'],
-      scss: ['<%= config.stage %>/**/*.scss']
+      scssFromStage: ['<%= config.stage %>/**/*.scss'],
+      stylesFromDist: ['<%= config.dist %>/styles'],
     },
     copy: {
       toStage: {
@@ -21,6 +22,18 @@ module.exports = function(grunt) {
             src: [
               'styles/**/*',
               '*.html'
+            ],
+            dest: '<%= config.stage %>'
+          }
+        ]
+      },
+      stylesToStage: {
+        files: [
+          {
+            expand: true,
+            cwd: '<%= config.src %>',
+            src: [
+              'styles/**/*'
             ],
             dest: '<%= config.stage %>'
           }
@@ -38,10 +51,22 @@ module.exports = function(grunt) {
             dest: '<%= config.dist %>'
           }
         ]
+      },
+      stylesToDist: {
+        files: [
+          {
+            expand: true,
+            cwd: '<%= config.stage %>',
+            src: [
+              'styles/**/*'
+            ],
+            dest: '<%= config.dist %>'
+          }
+        ]
       }
     },
     compass: {
-      main: {
+      stage: {
         options: {
           sassDir: '<%= config.stage %>/styles',
           cssDir: '<%= config.stage %>/styles'
@@ -66,14 +91,36 @@ module.exports = function(grunt) {
           keepalive: true
         }
       }
+    },
+    watch: {
+      styles: {
+        files: '<%= config.src %>/styles/**/*',
+        tasks: [
+          'copy:stylesToStage',
+          'compass:stage',
+          'clean:scssFromStage',
+          'clean:stylesFromDist',
+          'copy:stylesToDist'
+        ],
+        options: {
+          interrupt: true,
+          debounceDelay: 250
+        }
+      }
+    },
+    concurrent: {
+      devServer: [
+        'watch:styles',
+        'connect:server'
+      ]
     }
   });
 
   grunt.registerTask('build', [
     'clean:stage',
     'copy:toStage',
-    'compass:main',
-    'clean:scss',
+    'compass:stage',
+    'clean:scssFromStage',
     'useminPrepare',
     'concat',
     'cssmin',
@@ -84,6 +131,6 @@ module.exports = function(grunt) {
   ]);
 
   grunt.registerTask('server', [
-    'connect:server'
+    'concurrent:devServer',
   ]);
 }
