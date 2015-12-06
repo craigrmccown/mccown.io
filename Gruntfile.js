@@ -4,105 +4,57 @@ module.exports = function(grunt) {
   grunt.initConfig({
     config: {
       src: 'src',
-      stage: '.tmp',
       dist: 'build'
     },
     clean: {
-      stage: ['<%= config.stage %>'],
-      dist: ['<%= config.dist %>'],
-      scssFromStage: ['<%= config.stage %>/**/*.scss'],
-      stylesFromDist: ['<%= config.dist %>/styles'],
+      dist: ['<%= config.dist %>']
     },
     copy: {
-      toStage: {
-        files: [
-          {
-            expand: true,
-            cwd: '<%= config.src %>',
-            src: [
-              'styles/**/*',
-              '*.html'
-            ],
-            dest: '<%= config.stage %>'
-          }
-        ]
-      },
-      stylesToStage: {
-        files: [
-          {
-            expand: true,
-            cwd: '<%= config.src %>',
-            src: [
-              'styles/**/*'
-            ],
-            dest: '<%= config.stage %>'
-          }
-        ]
-      },
       toDist: {
         files: [
           {
             expand: true,
-            cwd: '<%= config.stage %>',
+            cwd: '<%= config.src %>',
             src: [
-              'styles/**/*',
+              'styles/**/*.css',
               '*.html'
             ],
             dest: '<%= config.dist %>'
           }
         ]
-      },
-      stylesToDist: {
-        files: [
-          {
-            expand: true,
-            cwd: '<%= config.stage %>',
-            src: [
-              'styles/**/*'
-            ],
-            dest: '<%= config.dist %>'
-          }
-        ]
       }
+    },
+    express: {
+        all: {
+            options: {
+                port: 9000,
+                bases: './src',
+                server: 'server.js'
+            }
+        }
     },
     compass: {
-      stage: {
+      all: {
         options: {
-          sassDir: '<%= config.stage %>/styles',
-          cssDir: '<%= config.stage %>/styles'
+          sassDir: '<%= config.src %>/styles',
+          cssDir: '<%= config.src %>/styles'
         }
       }
     },
-    useminPrepare: {
-      html: '<%= config.stage %>/index.html',
-      options: {
-        root: '<%= config.stage %>',
-        dest: '<%= config.stage %>'
-      }
-    },
-    usemin: {
-      html: '<%= config.stage %>/index.html'
-    },
-    connect: {
-      server: {
-        options: {
-          port: 8000,
-          base: '<%= config.dist %>',
-          keepalive: true,
-          debug: true
-        }
+    cssmin: {
+      target: {
+        files: [{
+          expand: true,
+          cwd: '<%= config.src %>',
+          src: ['main.css'],
+          dest: '<%= config.src %>'
+        }]
       }
     },
     watch: {
       styles: {
-        files: '<%= config.src %>/styles/**/*',
-        tasks: [
-          'copy:stylesToStage',
-          'compass:stage',
-          'clean:scssFromStage',
-          'clean:stylesFromDist',
-          'copy:stylesToDist'
-        ],
+        files: '<%= config.src %>/styles/**/*.{scss,sass}',
+        tasks: ['compass:all'],
         options: {
           interrupt: true,
           debounceDelay: 250
@@ -113,7 +65,7 @@ module.exports = function(grunt) {
       dev: {
         tasks: [
           'watch:styles',
-          'connect:server'
+          'express:all'
         ],
         options: {
           logConcurrentOutput: true
@@ -123,20 +75,14 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('build', [
-    'clean:stage',
-    'copy:toStage',
-    'compass:stage',
-    'clean:scssFromStage',
-    'useminPrepare',
-    'concat',
+    'compass:all',
     'cssmin',
-    'usemin',
-    'clean:dist',
-    'copy:toDist',
-    'clean:stage'
+    'copy:toDist'
   ]);
 
   grunt.registerTask('dev', [
-    'concurrent:dev',
+    'compass:all',
+    'express:all',
+    'watch:styles'
   ]);
 }

@@ -1,0 +1,41 @@
+.content {
+    margin-left: auto;
+    margin-right: auto;
+    width: 800px;
+    font-family: "le-havre-rounded";
+    text-align: center;
+    font-size: 1em;
+
+    header {
+        margin-top: 300px;
+        color: $medium-light-color;
+        text-shadow: 1px 3px $dark-color;
+        font-size: 6em;
+    }
+
+    .links {
+        margin-top: 75px;
+
+        a {
+            margin: $gutter;
+            padding: $gutter;
+            text-decoration: none;
+            color: $medium-light-color;
+            border-color: $medium-light-color;
+            border-width: 1px;
+            border-style: solid;
+            @include border-radius(10px);
+
+            &:hover {
+                color: $light-color;
+                border-color: $light-color;
+            }
+
+            &:active {
+                color: $medium-light-color;
+                border-color: $medium-light-color;
+                background: $medium-dark-color;
+            }
+        }
+    }
+}

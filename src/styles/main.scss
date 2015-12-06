@@ -1,20 +1,13 @@
 @import "compass/reset";
+@import "compass/css3/border-radius";
 
-$background: #ffa200;
+/* local imports */
+@import "variables";
+@import "components";
 
 body {
-  background: $background;
-  font-size: 100%;
-}
-
-.header {
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 300px;
-  width: 300px;
-  color: lighten($background, 40%);
-  font-family: "le-havre-rounded";
-  text-align: center;
-  text-shadow: 1px 3px darken($background, 15%);
-  font-size: 6em;
+    background: $base-color;
+    font-size: 100%;
+    cursor: default;
+    font-size: 15px;
 }

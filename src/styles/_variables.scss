@@ -1,0 +1,6 @@
+$base-color: #ffa200;
+$light-color: lighten($base-color, 50%);
+$medium-light-color: lighten($base-color, 40%);
+$medium-dark-color: darken($base-color, 5%);
+$dark-color: darken($base-color, 15%);
+$gutter: 20px;
