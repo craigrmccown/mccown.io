@@ -1,6 +1,12 @@
+/* colors */
 $base-color: #ffa200;
-$light-color: lighten($base-color, 50%);
+$light-color: lighten($base-color, 60%);
 $medium-light-color: lighten($base-color, 40%);
 $medium-dark-color: darken($base-color, 5%);
 $dark-color: darken($base-color, 15%);
+
+/* spacing */
 $gutter: 20px;
+
+/* fonts */
+$base-font-size: 20px;

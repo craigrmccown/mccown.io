@@ -7,7 +7,6 @@
 
 body {
     background: $base-color;
-    font-size: 100%;
     cursor: default;
-    font-size: 15px;
+    font-size: $base-font-size;
 }
